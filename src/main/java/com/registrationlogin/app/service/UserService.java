@@ -8,4 +8,5 @@ public interface UserService {
     User registerUser (UserDTO userDTO);
     User loginUser (LoginDTO loginDTO);
     User getUserByUsername (String username);
+    void deleteUser (Integer userId);
 }

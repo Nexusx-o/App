@@ -37,8 +37,18 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Username already exists!");
         }
         //save and return new user
-        return (userRepository.save(userMapper.toEntity(userDTO)));
+        User user;
+
+        if (userDTO.getUserId() == null) {
+            user = userRepository.save(userMapper.toEntityCreate(userDTO));
+        } else {
+            User user1 = userRepository.getById(userDTO.getUserId());
+            user = userRepository.save(userMapper.toEntityUpdate(user1, userDTO));
+        }
+        return user;
     }
+
+
 
     /**
      * User login
@@ -76,5 +86,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUserName(username);
+    }
+
+    @Override
+    public void deleteUser(Integer userId) {
+        userRepository.deleteById(userId);
     }
 }

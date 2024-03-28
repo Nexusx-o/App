@@ -35,7 +35,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("search/{username}")
     public ResponseEntity<?> findUser (@PathVariable String username) {
         try {
             User user = userService.getUserByUsername(username);
@@ -48,6 +48,11 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("delete/{userId}")
+    public void deleteUser (@PathVariable Integer userId) {
+        userService.deleteUser(userId);
     }
 
 }
