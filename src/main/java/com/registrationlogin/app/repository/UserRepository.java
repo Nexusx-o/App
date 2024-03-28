@@ -1,7 +1,6 @@
 package com.registrationlogin.app.repository;
 
 import com.registrationlogin.app.entity.User;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
