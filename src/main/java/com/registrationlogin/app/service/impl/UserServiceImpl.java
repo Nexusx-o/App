@@ -9,6 +9,8 @@ import com.registrationlogin.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -88,8 +90,29 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserName(username);
     }
 
+    /**
+     * Delete user by userId
+     *
+     * @param userId
+     * @return void
+     * @author anujam
+     * @Date 3/28/2024
+     */
     @Override
     public void deleteUser(Integer userId) {
         userRepository.deleteById(userId);
+    }
+
+    /**
+     * Get All users
+     *
+     * @param ()
+     * @return List of Users
+     * @author anujam
+     * @Date 3/28/2024
+     */
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 }
