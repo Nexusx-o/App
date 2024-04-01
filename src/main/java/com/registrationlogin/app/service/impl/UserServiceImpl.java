@@ -6,18 +6,15 @@ import com.registrationlogin.app.entity.User;
 import com.registrationlogin.app.mapper.UserMapper;
 import com.registrationlogin.app.repository.UserRepository;
 import com.registrationlogin.app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserMapper userMapper;
+    protected UserRepository userRepository;
+    protected UserMapper userMapper;
 
     /**
      * Register new user
@@ -35,7 +32,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Username, password and user role are required!");
         }
         //check if username already exist
-        if (userRepository.findByUserName(userDTO.getUsername()) != null) {
+        if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             throw new IllegalArgumentException("Username already exists!");
         }
         //save and return new user
@@ -43,9 +40,11 @@ public class UserServiceImpl implements UserService {
 
         if (userDTO.getUserId() == null) {
             user = userRepository.save(userMapper.toEntityCreate(userDTO));
+            log.info("User Created Successfully!");
         } else {
             User user1 = userRepository.getById(userDTO.getUserId());
             user = userRepository.save(userMapper.toEntityUpdate(user1, userDTO));
+            log.info("User Updated Successfully!");
         }
         return user;
     }
@@ -68,9 +67,10 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Username and password are required!");
         }
         //check if the user exist and if exist verify password
-        User user = userRepository.findByUserName(loginDTO.getUsername());
+        User user = userRepository.findByUsername(loginDTO.getUsername());
 
         if (user != null && loginDTO.getPassword().equals(user.getPassword())) {
+            log.info("Access Granted for: " + user.getUsername());
             return user;
         } else {
             throw new IllegalArgumentException("Invalid username or password!");
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.findByUserName(username);
+        return userRepository.findByUsername(username);
     }
 
     /**
